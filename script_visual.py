@@ -57,7 +57,6 @@ class S1(Scene):
         self.play(Unwrite(jargon), Unwrite(j1), Unwrite(j2))
         self.wait(3)
 
-
 class S1A(Scene):
     def construct(self):
         r = RLine()
@@ -356,17 +355,27 @@ class S2A(Scene):
 class S2B(Scene):
     def construct(self):
         ep = CustomTable("employee_privileges", [
-            ["key", "red", "INT", False, "employee_id"],
-            ["key", "red", "INT", False, "privilege_id"]
+            ["key", "red", "INT", True, "employee_id"],
+            ["key", "red", "INT", True, "privilege_id"]
         ], 3)
 
-        e = CustomTable("employees", [
-            ["key", "yellow", "TINYINT(4)", False, "id"],
-            ["icon", "blue", "datatypes", False, "...attributes"]
+        p = CustomTable("privileges", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "blue", "VARCHAR(50)", False, "privilege_name"]
         ], 3)
 
         r = RLine()
         r.shift(DOWN*0.5)
+        r.rotate(PI)
+
+        self.play(*p.get_animations())
+        self.play(p.animate.to_edge(LEFT).shift(UP))
+        r.next_to(p, RIGHT)
+        ep.next_to(r, RIGHT)
+        self.play(*r.get_animations())
+        self.wait(2)
+        self.play(*ep.get_animations())
+        self.wait(2)
 
 class S2C(Scene):
     def construct(self):

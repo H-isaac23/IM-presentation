@@ -28,6 +28,7 @@ class TestRLine(Scene):
 
 class CustomKey(Polygon):
     def __init__(self, scaled=False, color: Color = YELLOW, scale_factor=0.08, **kwargs):
+
         super().__init__(
             [-0.7, 1.8, 0],
             [0, 2.5, 0],
