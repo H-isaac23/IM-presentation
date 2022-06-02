@@ -27,7 +27,7 @@ class TestRLine(Scene):
         self.wait(2)
 
 class CustomKey(Polygon):
-    def __init__(self, scaled=False, color: Color = YELLOW, **kwargs):
+    def __init__(self, scaled=False, color: Color = YELLOW, scale_factor=0.08, **kwargs):
         super().__init__(
             [-0.7, 1.8, 0],
             [0, 2.5, 0],
@@ -40,14 +40,14 @@ class CustomKey(Polygon):
             **kwargs
         )
         if(scaled == True):
-            self.scale(0.08)
+            self.scale(scale_factor)
 
 class CustomIcon(Square):
-    def __init__(self, scaled=False, **kwargs):
+    def __init__(self, scaled=False, scale_factor=0.08, **kwargs):
         super().__init__(**kwargs)
         self.rotate(PI/4)
         if scaled:
-            self.scale(0.08)
+            self.scale(scale_factor)
 
 class Column(VGroup):
     def __init__(self, icon, icon_color, data_type, icon_filled=False, name="Test"):
@@ -135,3 +135,9 @@ class RLine(VGroup):
         for an in self:
             animations.append(Create(an))
         return animations
+
+    def remove_anim(self):
+        anim = []
+        for an in self:
+            anim.append(Uncreate(an))
+        return anim
