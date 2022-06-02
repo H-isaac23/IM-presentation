@@ -1,2 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/ISAAC/Desktop/School/IM/media/videos/testScene/480p15/partial_movie_files/InvertedTriangle/3163782288_855376541_3882426386.mp4'
