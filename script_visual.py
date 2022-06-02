@@ -468,15 +468,80 @@ class S2C(Scene):
 
 class S2D(Scene):
     def construct(self):
-        pass
+        p = CustomTable("products", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "blue", "VARCHAR(50)", False, "product_code"],
+            ["icon", "blue", "VARCHAR(25)", False, "product_name"],
+            ["icon", "blue", "LONGTEXT", False, "Description"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "standard_cost"],
+            ["icon", "blue", "DECIMAL(19,4)", True, "list_price"],
+            ["icon", "blue", "INT", False, "reorder_level"],
+            ["icon", "blue", "INT", False, "target_level"],
+            ["icon", "blue", "VARCHAR(50)", False, "quantity_per_unit"],
+            ["icon", "blue", "TINYINT(1)", True, "discontinued"],
+            ["icon", "blue", "INT", False, "minimum_reorder_quantity"],
+            ["icon", "blue", "VARCHAR(50)", False, "category"]
+        ], 3.5)
+        p.to_edge(UP)
+
+        self.play(*p.get_animations())
+        self.wait(3)
+        self.play(*p.remove_table())
+        self.wait(2)
 
 class S2E(Scene):
     def construct(self):
-        pass
+        it = CustomTable("inventory_transactions", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "red", "TINYINT(4)", True, "transaction_type"],
+            ["icon", "red", "INT", True, "product_id"],
+            ["icon", "red", "INT", False, "purchase_order_id"],
+            ["icon", "red", "INT", False, "customer_order_id"],
+            ["icon", "blue", "Datetime", False, "transaction_created_date"],
+            ["icon", "blue", "Datetime", False, "transaction_modified_date"],
+            ["icon", "blue", "INT", True, "quantity"],
+            ["icon", "blue", "VARCHAR(255)", False, "comments"]
+        ], 3.75)
+        it.shift(UP*1.5)
+
+        self.play(*it.get_animations())
+        self.wait(2)
+        self.play(it.animate.to_edge(LEFT))
+        self.wait(2)
+
+        r = RLine()
+        r.next_to(it, RIGHT)
+
+        itt = CustomTable("inventory_transaction_types", [
+            ["key", "yellow", "INT", True, "id"],
+            ["icon", "blue", "VARCHAR(50)", True, "type"]
+        ], 3)
+        itt.next_to(r, RIGHT)
+
+        self.play(*itt.get_animations(), *r.get_animations())
+        self.wait(3)
+        self.play(*itt.remove_table(), *it.remove_table(), *r.remove_anim())
 
 class S3(Scene):
     def construct(self):
-        pass
+        cool = Text("This is cool...", font_size=30)
+        but = Text("...but is there anything else?", font_size=30)
+
+        cool.shift(UP)
+        but.next_to(cool, DOWN)
+
+        self.play(Write(cool))
+        self.wait(2)
+        self.play(Write(but))
+        self.wait(2)
+        self.play(Unwrite(cool), Unwrite(but))
+        self.wait(0.5)
+
+        rep = Text("3 report examples", font_size=30)
+        self.play(Write(rep))
+        self.wait(2)
+        self.play(Unwrite(rep))
+        self.wait(2)
 
 class S3A(Scene):
     def construct(self):
