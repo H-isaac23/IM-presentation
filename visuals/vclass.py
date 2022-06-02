@@ -1,7 +1,7 @@
 from manim import *
 from colour import Color
 
-class Test(Scene):
+class TestTable(Scene):
     def construct(self):
         table = CustomTable("Test", [
             ["key", "yellow", "INT", False, "ID"],
@@ -18,6 +18,12 @@ class Test(Scene):
         # self.play(FadeIn(test, shift=LEFT))
         self.play(AnimationGroup(*table.get_animations(), lag_ratio=0.1))
         self.play(AnimationGroup(*table.remove_table(), lag_ratio=0.1))
+        self.wait(2)
+
+class TestRLine(Scene):
+    def construct(self):
+        r = RLine()
+        self.play(*r.get_animations())
         self.wait(2)
 
 class CustomKey(Polygon):
@@ -110,4 +116,22 @@ class CustomTable(VGroup):
         for i in range(len(self)):
             animations.append(FadeOut(self[i], shift=LEFT))
         animations.append(Uncreate(self[-1]))
+        return animations
+
+class RLine(VGroup):
+    def __init__(self):
+        main = DashedLine([-2, 0, 0], [2, 0, 0], dash_length=0.1)
+        op1 = Line([-1.9, 0.15, 0], [-1.9, -0.15, 0])
+        op2 = Line([-1.8, 0.15, 0], [-1.8, -0.15, 0])
+        f1 = Line([2, 0, 0], [2.2, 0.2, 0])
+        f2 = Line([2, 0, 0], [2.2, 0, 0])
+        f3 = Line([2, 0, 0], [2.2, -0.2, 0])
+        f4 = Line([2, 0.15, 0], [2, -0.15, 0])
+
+        super().__init__(main, op1, op2, f1, f2, f3, f4)
+
+    def get_animations(self):
+        animations = []
+        for an in self:
+            animations.append(Create(an))
         return animations
