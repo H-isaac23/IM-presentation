@@ -354,6 +354,12 @@ class S2A(Scene):
 
 class S2B(Scene):
     def construct(self):
+        sim = Text("Employee table is the same as customer table...", font_size=30)
+        self.play(Write(sim))
+        self.wait(2)
+        self.play(Unwrite(sim))
+        self.wait(2)
+
         ep = CustomTable("employee_privileges", [
             ["key", "red", "INT", True, "employee_id"],
             ["key", "red", "INT", True, "privilege_id"]
@@ -379,7 +385,86 @@ class S2B(Scene):
 
 class S2C(Scene):
     def construct(self):
-        pass
+        po = CustomTable("purchase_orders", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "blue", "Datetime", False, "submitted_date"],
+            ["icon", "blue", "Datetime", False, "creation_date"],
+            ["icon", "blue", "Datetime", False, "expected_date"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "shipping_fee"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "taxes"],
+            ["icon", "blue", "Datetime", False, "payment_date"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "payment_amount"],
+            ["icon", "blue", "VARCHAR(50)", False, "payment_method"],
+            ["icon", "blue", "LONGTEXT", False, "notes"],
+            ["icon", "blue", "INT", False, "approved_by"],
+            ["icon", "blue", "Datetime", False, "approved_date"]
+        ], 3.5)
+
+        po2 = CustomTable("purchase_orders", [
+            ["icon", "red", "INT", False, "supplier_id"],
+            ["icon", "red", "INT", False, "created_by"],
+            ["icon", "red", "INT", False, "status_id"],
+        ], 3)
+
+        r = RLine()
+        r.shift(DOWN*0.5)
+
+        po.to_edge(UP)
+        po.to_edge(LEFT)
+        po2.next_to(po, RIGHT)
+        self.play(*po.get_animations(), *po2.get_animations())
+        self.wait(2)
+        self.play(*po.remove_table())
+        self.wait(1)
+        self.play(po2.animate.to_edge(LEFT))
+        self.wait(1)
+        r.next_to(po2, RIGHT)
+        r.rotate(PI)
+        self.play(*r.get_animations())
+        self.wait(2)
+
+        pos = CustomTable("purchase_order_status", [
+            ["key", "yellow", "INT", True, "id"],
+            ["icon", "blue", "VARCHAR(50)", True, "status"]
+        ], 3)
+        pos.next_to(r, RIGHT)
+
+        self.play(*pos.get_animations())
+        self.wait(2)
+        self.play(*pos.remove_table())
+        self.wait(1)
+
+        supp = Text("Supplier table = customer table...", font_size=24)
+        supp.next_to(r, RIGHT)
+        self.play(Write(supp))
+        self.wait(2)
+        self.play(Unwrite(supp))
+
+        emp = Text("Employee table was already explained...", font_size=24)
+        emp.next_to(r, RIGHT)
+        self.play(Write(emp))
+        self.wait(2)
+        self.play(Unwrite(emp))
+        self.wait(2)
+
+        pod = CustomTable("purchase_order_details", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "red", "INT", True, "purchase_order_id"],
+            ["icon", "red", "INT", False, "product_id"],
+            ["icon", "red", "INT", False, "inventory_id"],
+            ["icon", "blue", "DECIMAL(19,4)", True, "quantity"],
+            ["icon", "blue", "DECIMAL(19,4)", True, "unit_cost"],
+            ["icon", "blue", "Datetime", False, "date_received"],
+            ["icon", "blue", "TINYINT(1)", True, "posted_to_inventory"]
+        ], 3.5)
+        pod.next_to(r, RIGHT)
+
+        self.play(*pod.get_animations(), r.animate.rotate(PI))
+        self.wait(2)
+        self.play(*pod.remove_table(), *r.remove_anim())
+        self.wait(5)
+        self.play(*po2.remove_table())
+        self.wait(2)
 
 class S2D(Scene):
     def construct(self):
