@@ -140,3 +140,11 @@ class RLine(VGroup):
         for an in self:
             anim.append(Uncreate(an))
         return anim
+
+class TInstance(VGroup):
+    def __init__(self, text):
+        text = Text(text, font_size=14)
+        rect = Rectangle(width=text.width + 0.2, height=text.height + 0.2)
+        rect.stroke_width = 1
+        rect.move_to(text)
+        super().__init__(text, rect)
