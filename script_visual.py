@@ -161,19 +161,212 @@ class S2(Scene):
         it.next_to(po, DOWN*2)
         p.next_to(it, DOWN*2)
 
-        self.wait(3)
+        self.wait(1)
         self.play(Write(po), Write(p), Write(it), Write(e), Write(o))
         self.wait(3)
         self.play(Unwrite(po), Unwrite(p), Unwrite(it), Unwrite(e), Unwrite(o), Unwrite(erd))
+        self.wait(2)
 
 
 class S2A(Scene):
     def construct(self):
-        pass
+        order_normal = CustomTable("Test", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "blue", "Datetime", False, "shipped_date"],
+            ["icon", "blue", "Datetime", False, "order_date"],
+            ["icon", "blue", "VARCHAR(50)", False, "ship_name"],
+            ["icon", "blue", "LONGTEXT", False, "ship_address"],
+            ["icon", "blue", "VARCHAR(50)", False, "ship_city"],
+            ["icon", "blue", "VARCHAR(50)", False, "ship_state_province"],
+            ["icon", "blue", "VARCHAR(50)", False, "ship_zip_postal_code"],
+            ["icon", "blue", "VARCHAR(50)", False, "ship_country_region"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "shipping_fee"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "taxes"],
+            ["icon", "blue", "VARCHAR(50)", False, "payment_type"],
+            ["icon", "blue", "Datetime", False, "paid_date"],
+            ["icon", "blue", "LONGTEXT", False, "notes"],
+            ["icon", "blue", "DOUBLE", False, "tax_rate"]
+        ], 3.5)
+        order_normal.to_edge(UP*-0.75)
+
+        self.play(*order_normal.get_animations())
+        self.wait(2)
+        self.play(order_normal.animate.to_edge(LEFT))
+
+        one = Text("1", font_size=30)
+        a = Text("A16", font_size=30, color=RED)
+
+        one.next_to(order_normal, RIGHT*3)
+        a.next_to(order_normal, RIGHT*3)
+
+        self.play(Write(one))
+        self.wait(1)
+        self.play(Unwrite(one))
+        self.wait(1)
+        self.play(Write(a))
+        self.wait(1)
+        self.play(Unwrite(a))
+        self.wait(1)
+
+        varchar = Text("Varchar and longtext", font_size=30)
+        sl = Text("- String of letters", font_size=20)
+        long = Text("- Longtext is basically a longer varchar", font_size=20)
+
+        varchar.next_to(order_normal, RIGHT*3)
+        sl.next_to(varchar, DOWN)
+        long.next_to(sl, DOWN)
+
+        self.play(Write(varchar), Write(long), Write(sl))
+        self.wait(2)
+        self.play(Unwrite(varchar), Unwrite(long), Unwrite(sl), *order_normal.remove_table())
+        self.wait(2)
+
+        order_foreign = CustomTable("orders", [
+            ["icon", "red", "INT", False, "employee_id"],
+            ["icon", "red", "Datetime", False, "customer_id"],
+            ["icon", "red", "Datetime", False, "product_id"],
+            ["icon", "red", "VARCHAR(50)", False, "tax_status_id"],
+            ["icon", "red", "LONGTEXT", False, "status_id"]
+        ], 3.5)
+
+        ots = CustomTable("orders_tax_status", [
+            ["key", "yellow", "TINYINT(4)", False, "id"],
+            ["icon", "red", "VARCHAR(50)", False, "tax_status_name"]
+        ], 3.5)
+
+        r = RLine()
+        r.rotate(PI)
+        r.shift(DOWN*0.5)
+
+        self.play(*order_foreign.get_animations())
+        self.play(order_foreign.animate.to_edge(LEFT).shift(UP*0.5))
+        self.wait(3)
+
+        self.play(*ots.get_animations())
+        self.play(ots.animate.to_edge(RIGHT))
+        self.wait(2)
+
+        self.play(*r.get_animations())
+        self.wait(3)
+
+        self.play(*ots.remove_table())
+        self.wait(3)
+
+        self.play(r.animate.shift(LEFT*1.5))
+        self.play(r.animate.scale(0.75))
+
+        os = CustomTable("orders_status", [
+            ["key", "yellow", "TINYINT(4)", False, "id"],
+            ["icon", "red", "VARCHAR(50)", False, "status_name"]
+        ], 3.5)
+        os.next_to(r, RIGHT)
+
+        self.play(*os.get_animations())
+        self.wait(3)
+        self.play(*os.remove_table())
+        self.wait(1.5)
+
+        s1 = CustomTable("Shippers", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "blue", "VARCHAR(50)", False, "company"],
+            ["icon", "blue", "VARCHAR(50)", False, "last_name"],
+            ["icon", "blue", "VARCHAR(50)", False, "first_name"],
+            ["icon", "blue", "VARCHAR(50)", False, "email_address"],
+            ["icon", "blue", "VARCHAR(50)", False, "job_title"],
+            ["icon", "blue", "VARCHAR(25)", False, "business_phone"],
+            ["icon", "blue", "VARCHAR(25)", False, "home_phone"],
+            ["icon", "blue", "VARCHAR(25)", False, "mobile_phone"],
+            ["icon", "blue", "VARCHAR(25)", False, "fax_number"],
+            ["icon", "blue", "LONGTEXT", False, "address"],
+            ["icon", "blue", "VARCHAR(50)", False, "city"]
+        ], 3)
+
+        s2 = CustomTable("Shippers", [
+            ["icon", "blue", "VARCHAR(50)", False, "state_province"],
+            ["icon", "blue", "VARCHAR(15)", False, "zip_postal_code"],
+            ["icon", "blue", "VARCHAR(50)", False, "country_region"],
+            ["icon", "blue", "LONGTEXT", False, "web_page"],
+            ["icon", "blue", "LONGTEXT", False, "notes"],
+            ["icon", "blue", "LONGBLOB", False, "attachments"]
+        ], 3)
+
+        s1.next_to(r, RIGHT)
+        s2.next_to(s1, RIGHT)
+
+        self.play(*s1.get_animations(), *s2.get_animations())
+        self.wait(3)
+
+        self.play(*s1.remove_table(), *s2.remove_table())
+        self.wait(1.5)
+
+        cust = Text("Customer table = Shipper table", font_size=30)
+        cust.next_to(r, RIGHT)
+
+        self.play(Write(cust))
+        self.wait(3)
+        self.play(Unwrite(cust))
+        self.wait(1.5)
+
+        iv = CustomTable("invoices", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "red", "INT", False, "order_id"],
+            ["icon", "blue", "Datetime", False, "invoice_date"],
+            ["icon", "blue", "Datetime", False, "due_date"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "shipping"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "tax"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "amount_due"]
+        ], 3)
+
+        iv.next_to(r, RIGHT)
+        self.play(*iv.get_animations(), r.animate.rotate(PI))
+        self.wait(3)
+        self.play(*iv.remove_table())
+        self.wait(1.5)
+
+        od = CustomTable("order_details", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "red", "INT", True, "order_id"],
+            ["icon", "red", "INT", False, "product_id"],
+            ["icon", "red", "INT", False, "status_id"],
+            ["icon", "blue", "DECIMAL(19,4)", True, "quantity"],
+            ["icon", "blue", "DECIMAL(19,4)", False, "unit_price"],
+            ["icon", "blue", "Datetime", False, "date_allocated"],
+            ["icon", "blue", "DOUBLE", True, "discount"],
+            ["icon", "blue", "INT", False, "purchase_order_id"],
+            ["icon", "blue", "INT", False, "inventory_id"]
+        ], 3)
+        od.next_to(r, RIGHT)
+
+        self.play(*od.get_animations())
+        self.wait(3)
+        self.play(*order_foreign.remove_table(), od.animate.next_to(r, LEFT))
+        self.wait(1.5)
+
+        ods = CustomTable("order_details_status", [
+            ["key", "yellow", "TINYINT(4)", False, "id"],
+            ["icon", "blue", "VARCHAR(50)", False, "status_name"]
+        ], 3)
+        ods.next_to(r, RIGHT)
+
+        self.play(*ods.get_animations(), r.animate.rotate(PI))
+        self.wait(3)
+        self.play(*od.remove_table(), *ods.remove_table(), *r.remove_anim())
+        self.wait(1.5)
 
 class S2B(Scene):
     def construct(self):
-        pass
+        ep = CustomTable("employee_privileges", [
+            ["key", "red", "INT", False, "employee_id"],
+            ["key", "red", "INT", False, "privilege_id"]
+        ], 3)
+
+        e = CustomTable("employees", [
+            ["key", "yellow", "TINYINT(4)", False, "id"],
+            ["icon", "blue", "datatypes", False, "...attributes"]
+        ], 3)
+
+        r = RLine()
+        r.shift(DOWN*0.5)
 
 class S2C(Scene):
     def construct(self):

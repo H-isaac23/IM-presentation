@@ -87,8 +87,6 @@ class CustomTable(VGroup):
         self.lencol = len(columns)
 
         height = 0.475*self.lencol+0.1
-        if self.lencol > 12:
-            height += 0.3
         rect = Rectangle(width=width, height=height)
         header = Text(table_name, font_size=16)
         rect.next_to(header, DOWN, buff=0.1)
