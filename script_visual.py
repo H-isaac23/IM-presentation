@@ -764,22 +764,3 @@ class S4(Scene):
         self.wait(2)
         self.play(Unwrite(t))
         self.wait(1)
-
-class TestTable(Scene):
-    def construct(self):
-        table = CustomTable("Test", [
-            ["key", "yellow", "INT", False, "ID"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "INT", True, "fuck"]
-        ], 3.5)
-        table.to_edge(UP)
-
-        # self.play(FadeIn(test, shift=LEFT))
-        self.play(AnimationGroup(*table.get_animations(), lag_ratio=0.1))
-        self.play(AnimationGroup(*table.remove_table(), lag_ratio=0.1))
-        self.wait(2)
