@@ -3,3 +3,4 @@ from visuals.vclass import CustomTable
 from visuals.vclass import CustomIcon
 from visuals.vclass import CustomKey
 from visuals.vclass import TInstance
+from visuals.vanimations import Count

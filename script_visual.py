@@ -3,6 +3,8 @@ from visuals import RLine
 from visuals import CustomTable
 from visuals import CustomKey
 from visuals import CustomIcon
+from visuals import TInstance
+from visuals import Count
 
 class S1(Scene):
     def construct(self):
@@ -165,7 +167,6 @@ class S2(Scene):
         self.wait(3)
         self.play(Unwrite(po), Unwrite(p), Unwrite(it), Unwrite(e), Unwrite(o), Unwrite(erd))
         self.wait(2)
-
 
 class S2A(Scene):
     def construct(self):
@@ -545,11 +546,99 @@ class S3(Scene):
 
 class S3A(Scene):
     def construct(self):
-        pass
+        sr = CustomTable("sales_report", [
+            ["key", "yellow", "INT", True, "id"],
+            ["icon", "blue", "VARCHAR(50)", True, "revenue"],
+            ["icon", "blue", "VARCHAR(50)", True, "cost"],
+            ["icon", "blue", "VARCHAR(50)", True, "profit"],
+        ], 2.75)
+        sr.shift(UP*1.25)
+
+        self.play(*sr.get_animations())
+        self.wait(1)
+        self.play(sr.animate.to_edge(LEFT))
+        self.wait(1)
+
+        t1 = TInstance("Amount: P12,000")
+        t2 = TInstance("Amount: P23,000")
+        t3 = TInstance("Amount: P32,000")
+        t4 = TInstance("Amount: P15,000")
+        t5 = TInstance("Amount: P15,000")
+        t1.shift(UP*1.5)
+        t2.next_to(t1, DOWN)
+        t3.next_to(t2, DOWN)
+        t4.next_to(t3, DOWN)
+        t5.next_to(t4, DOWN)
+
+        self.play(Write(t1[0]), Create(t1[1]),
+                  Write(t2[0]), Create(t2[1]),
+                  Write(t3[0]), Create(t3[1]),
+                  Write(t4[0]), Create(t4[1]),
+                  Write(t5[0]), Create(t5[1]))
+        self.wait(1)
+
+        p = Text("P", font_size=32)
+        p.shift(RIGHT*3)
+        total = DecimalNumber().set_color(WHITE)
+        total.next_to(p, RIGHT)
+        total.add_updater(lambda total: total.next_to(p, RIGHT))
+
+        self.play(Write(p), Write(total))
+        self.wait(2)
+
+        self.play(FadeOut(t1, target_position=total),
+                  FadeOut(t2, target_position=total),
+                  FadeOut(t3, target_position=total),
+                  FadeOut(t4, target_position=total),
+                  FadeOut(t5, target_position=total),
+                  Count(total, 0, 97000),
+                  runtime=0.5)
+        self.wait(2)
+
+        prod = Text("Product", font_size=32)
+        reg = Text("Region", font_size=32)
+        cat = Text("Category", font_size=32)
+
+        prod.next_to(total, UP)
+        reg.next_to(total, UP)
+        cat.next_to(total, UP)
+
+        self.play(FadeIn(prod, shift=UP), Count(total, 97000, 34000))
+        self.wait(0.3)
+        self.play(FadeOut(prod, shift=DOWN))
+        self.play(FadeIn(reg, shift=UP), Count(total, 34000, 108000))
+        self.wait(0.3)
+        self.play(FadeOut(reg, shift=DOWN))
+        self.play(FadeIn(cat, shift=UP), Count(total, 108000, 54000))
+        self.wait(0.3)
+        self.play(FadeOut(cat, shift=DOWN))
+        self.wait(2)
+
+        self.play(Unwrite(p), Unwrite(total), *sr.remove_table())
+        self.wait(2)
 
 class S3B(Scene):
     def construct(self):
-        pass
+        it = CustomTable("inventory_transactions", [
+            ["key", "yellow", "INT", False, "id"],
+            ["icon", "red", "TINYINT(4)", True, "transaction_type"],
+            ["icon", "red", "INT", True, "product_id"],
+            ["icon", "red", "INT", False, "purchase_order_id"],
+            ["icon", "red", "INT", False, "customer_order_id"],
+            ["icon", "blue", "Datetime", False, "transaction_created_date"],
+            ["icon", "blue", "Datetime", False, "transaction_modified_date"],
+            ["icon", "blue", "INT", True, "quantity"],
+            ["icon", "blue", "VARCHAR(255)", False, "comments"]
+        ], 3.75)
+        it.shift(UP * 1.5)
+
+        box = SurroundingRectangle(it[8], color=BLUE_B)
+        self.play(*it.get_animations())
+        self.wait(2)
+        self.play(Create(box))
+        self.wait(1)
+        self.play(*it.remove_table(), Uncreate(box))
+        self.wait(3)
 
 class S3C(Scene):
     def construct(self):
