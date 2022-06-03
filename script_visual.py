@@ -224,7 +224,7 @@ class S2A(Scene):
         order_foreign = CustomTable("orders", [
             ["icon", "red", "INT", False, "employee_id"],
             ["icon", "red", "Datetime", False, "customer_id"],
-            ["icon", "red", "Datetime", False, "product_id"],
+            ["icon", "red", "Datetime", False, "shipper_id"],
             ["icon", "red", "VARCHAR(50)", False, "tax_status_id"],
             ["icon", "red", "LONGTEXT", False, "status_id"]
         ], 3.5)
@@ -242,6 +242,11 @@ class S2A(Scene):
         self.play(order_foreign.animate.to_edge(LEFT).shift(UP*0.5))
         self.wait(3)
 
+        r1 = SurroundingRectangle(order_foreign[4], color=RED)
+        self.play(Create(r1))
+        self.wait(2)
+        self.play(Uncreate(r1))
+
         self.play(*ots.get_animations())
         self.play(ots.animate.to_edge(RIGHT))
         self.wait(2)
@@ -254,6 +259,7 @@ class S2A(Scene):
 
         self.play(r.animate.shift(LEFT*1.5))
         self.play(r.animate.scale(0.75))
+        self.wait(2)
 
         os = CustomTable("orders_status", [
             ["key", "yellow", "TINYINT(4)", False, "id"],
@@ -261,10 +267,17 @@ class S2A(Scene):
         ], 3.5)
         os.next_to(r, RIGHT)
 
+        r2 = SurroundingRectangle(order_foreign[5], color=RED)
+        self.play(Create(r2))
+        self.wait(2)
+        self.play(Uncreate(r2))
+
         self.play(*os.get_animations())
         self.wait(3)
         self.play(*os.remove_table())
         self.wait(1.5)
+
+        r3 = SurroundingRectangle(order_foreign[3], color=RED)
 
         s1 = CustomTable("Shippers", [
             ["key", "yellow", "INT", False, "id"],
@@ -292,6 +305,10 @@ class S2A(Scene):
 
         s1.next_to(r, RIGHT)
         s2.next_to(s1, RIGHT)
+
+        self.play(Create(r3))
+        self.wait(2)
+        self.play(Uncreate(r3))
 
         self.play(*s1.get_animations(), *s2.get_animations())
         self.wait(3)
@@ -348,6 +365,12 @@ class S2A(Scene):
         ], 3)
         ods.next_to(r, RIGHT)
 
+        r4 = SurroundingRectangle(od[4], color=RED)
+
+        self.play(Create(r4))
+        self.wait(3)
+        self.play(Uncreate(r4))
+
         self.play(*ods.get_animations(), r.animate.rotate(PI))
         self.wait(3)
         self.play(*od.remove_table(), *ods.remove_table(), *r.remove_anim())
@@ -382,6 +405,8 @@ class S2B(Scene):
         self.play(*r.get_animations())
         self.wait(2)
         self.play(*ep.get_animations())
+        self.wait(2)
+        self.play(*r.remove_anim(), *p.remove_table(), *ep.remove_table())
         self.wait(2)
 
 class S2C(Scene):
@@ -429,6 +454,12 @@ class S2C(Scene):
             ["icon", "blue", "VARCHAR(50)", True, "status"]
         ], 3)
         pos.next_to(r, RIGHT)
+
+        r1 = SurroundingRectangle(po2[3], color=RED)
+
+        self.play(Create(r1))
+        self.wait(2)
+        self.play(Uncreate(r1))
 
         self.play(*pos.get_animations())
         self.wait(2)
@@ -508,6 +539,13 @@ class S2E(Scene):
         self.play(*it.get_animations())
         self.wait(2)
         self.play(it.animate.to_edge(LEFT))
+        self.wait(2)
+
+        r1 = SurroundingRectangle(it[2], color=RED)
+
+        self.play(Create(r1))
+        self.wait(1)
+        self.play(Uncreate(r1))
         self.wait(2)
 
         r = RLine()
@@ -652,6 +690,9 @@ class S3C(Scene):
         cust.shift(LEFT*1.5)
         cust.shift(UP*1.5)
 
+        prod = Text("Product: ", font_size=28)
+        prod.next_to(cust, DOWN)
+
         j1 = Text("Software Engineer", font_size=28)
         j1.next_to(cust, RIGHT)
 
@@ -668,15 +709,15 @@ class S3C(Scene):
         p1.next_to(j1, DOWN)
 
         p2 = Text("Chocolate", font_size=28)
-        p2.next_to(j1, DOWN)
+        p2.next_to(j2, DOWN)
 
         p3 = Text("Keychain", font_size=28)
-        p3.next_to(j1, DOWN)
+        p3.next_to(j3, DOWN)
 
         p4 = Text("Plushie", font_size=28)
-        p4.next_to(j1, DOWN)
+        p4.next_to(j4, DOWN)
 
-        self.play(Write(cust), run_time=0.5)
+        self.play(Write(cust), Write(prod), run_time=0.5)
         self.wait(2)
         self.play(FadeIn(j1, shift=UP), FadeIn(p1, shift=UP))
         self.wait(0.3)
@@ -696,10 +737,10 @@ class S3C(Scene):
         c2.next_to(cust, RIGHT)
 
         pc1 = Text("iPhone 13", font_size=28)
-        pc1.next_to(j1, DOWN)
+        pc1.next_to(c1, DOWN)
 
         pc2 = Text("Clothes", font_size=28)
-        pc2.next_to(j1, DOWN)
+        pc2.next_to(c2, DOWN)
 
         self.play(FadeIn(c1, shift=UP), FadeIn(pc1, shift=UP))
         self.wait(0.3)
@@ -707,7 +748,7 @@ class S3C(Scene):
         self.wait(0.3)
         self.play(FadeOut(c2, shift=UP), FadeOut(pc2, shift=UP))
         self.wait(1)
-        self.play(Unwrite(cust), Unwrite(res))
+        self.play(Unwrite(cust), Unwrite(res), Unwrite(prod))
         self.wait(2)
 
 class S4(Scene):
