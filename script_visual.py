@@ -30,7 +30,7 @@ class S1(Scene):
 
         ### End logo
 
-        thanks = Text("Special thanks to Manim for the programmatic animations", font_size=16)
+        thanks = Text("Special thanks to Manim for the programmatic animations", font_size=20)
         thanks.shift(RIGHT*3, UP*2)
         logo.next_to(thanks, DOWN*3)
 
@@ -642,11 +642,87 @@ class S3B(Scene):
 
 class S3C(Scene):
     def construct(self):
-        pass
+        res = Text("Research report", font_size=36)
+        self.play(Write(res))
+        self.wait(2)
+        self.play(res.animate.to_edge(UP))
+        self.wait(1)
+
+        cust = Text("Customer: ", font_size=28)
+        cust.shift(LEFT*1.5)
+        cust.shift(UP*1.5)
+
+        j1 = Text("Software Engineer", font_size=28)
+        j1.next_to(cust, RIGHT)
+
+        j2 = Text("Civil Engineer", font_size=28)
+        j2.next_to(cust, RIGHT)
+
+        j3 = Text("Doctor", font_size=28)
+        j3.next_to(cust, RIGHT)
+
+        j4 = Text("President", font_size=28)
+        j4.next_to(cust, RIGHT)
+
+        p1 = Text("Mechanical Keyboard", font_size=28)
+        p1.next_to(j1, DOWN)
+
+        p2 = Text("Chocolate", font_size=28)
+        p2.next_to(j1, DOWN)
+
+        p3 = Text("Keychain", font_size=28)
+        p3.next_to(j1, DOWN)
+
+        p4 = Text("Plushie", font_size=28)
+        p4.next_to(j1, DOWN)
+
+        self.play(Write(cust), run_time=0.5)
+        self.wait(2)
+        self.play(FadeIn(j1, shift=UP), FadeIn(p1, shift=UP))
+        self.wait(0.3)
+        self.play(FadeIn(j2, shift=UP), FadeIn(p2, shift=UP), FadeOut(j1, shift=UP), FadeOut(p1, shift=UP))
+        self.wait(0.3)
+        self.play(FadeIn(j3, shift=UP), FadeIn(p3, shift=UP), FadeOut(j2, shift=UP), FadeOut(p2, shift=UP))
+        self.wait(0.3)
+        self.play(FadeIn(j4, shift=UP), FadeIn(p4, shift=UP), FadeOut(j3, shift=UP), FadeOut(p3, shift=UP))
+        self.wait(0.3)
+        self.play(FadeOut(j4, shift=UP), FadeOut(p4, shift=UP))
+        self.wait(0.3)
+
+        c1 = Text("California", font_size=28)
+        c1.next_to(cust, RIGHT)
+
+        c2 = Text("New York", font_size=28)
+        c2.next_to(cust, RIGHT)
+
+        pc1 = Text("iPhone 13", font_size=28)
+        pc1.next_to(j1, DOWN)
+
+        pc2 = Text("Clothes", font_size=28)
+        pc2.next_to(j1, DOWN)
+
+        self.play(FadeIn(c1, shift=UP), FadeIn(pc1, shift=UP))
+        self.wait(0.3)
+        self.play(FadeIn(c2, shift=UP), FadeIn(pc2, shift=UP), FadeOut(c1, shift=UP), FadeOut(pc1, shift=UP))
+        self.wait(0.3)
+        self.play(FadeOut(c2, shift=UP), FadeOut(pc2, shift=UP))
+        self.wait(1)
+        self.play(Unwrite(cust), Unwrite(res))
+        self.wait(2)
 
 class S4(Scene):
     def construct(self):
-        pass
+        db = Text("Databases are important!", font_size=32)
+        t = Text("Thanks for watching!", font_size=32)
+
+        self.play(Write(db))
+        self.wait(2)
+        self.play(Unwrite(db))
+        self.wait(1)
+        self.play(Write(t))
+        self.wait(2)
+        self.play(Unwrite(t))
+        self.wait(1)
 
 class TestTable(Scene):
     def construct(self):
