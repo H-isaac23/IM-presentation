@@ -1,31 +1,6 @@
 from manim import *
 from colour import Color
 
-class TestTable(Scene):
-    def construct(self):
-        table = CustomTable("Test", [
-            ["key", "yellow", "INT", False, "ID"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "VARCHAR(50)", False, "name"],
-            ["icon", "blue", "VARCHAR(50)", False, "name"],
-            ["icon", "red", "INT", True, "fuck"]
-        ], 3.5)
-        table.to_edge(UP)
-
-        # self.play(FadeIn(test, shift=LEFT))
-        self.play(AnimationGroup(*table.get_animations(), lag_ratio=0.1))
-        self.play(AnimationGroup(*table.remove_table(), lag_ratio=0.1))
-        self.wait(2)
-
-class TestRLine(Scene):
-    def construct(self):
-        r = RLine()
-        self.play(*r.get_animations())
-        self.wait(2)
-
 class CustomKey(Polygon):
     def __init__(self, scaled=False, color: Color = YELLOW, scale_factor=0.08, **kwargs):
 
@@ -80,8 +55,6 @@ class Column(VGroup):
         data_type.next_to(name, RIGHT)
 
         super().__init__(name, column_icon, data_type)
-
-# For animating the table, use animation group
 
 class CustomTable(VGroup):
     def __init__(self, table_name, columns, width):
